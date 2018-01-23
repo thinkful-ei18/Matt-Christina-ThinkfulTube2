@@ -1,21 +1,39 @@
-const API_KEY = 'YOUR_KEY_HERE';
+/**
+ * QUESTIONS: 
+ *  Does .getJSON return its own data?
+ */
+
+const API_KEY = 'AIzaSyDbHRxDgCEttJI4x0R7drtclNmnaPVmzEE';
 
 const store = {
   videos: []
 };
 
-// TASK: Add the Youtube Search Base URL here:
-// Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
-const BASE_URL = '';
+let sampleQuery = "cats";
 
+// TASK: Add the Youtube Search Base URL here: "https://www.googleapis.com/youtube/v3/search"
+// Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
+const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
+
+// buildApiRequest('GET',
+//                 '/youtube/v3/search',
+//                 {'maxResults': '25',
+//                  'part': 'snippet',
+//                  'q': 'surfing',
+//                  'type': ''});
 // TASK:
 // 1. Create a `fetchVideos` function that receives a `searchTerm` and `callback`
 // 2. Use `searchTerm` to construct the right query object based on the Youtube API docs
 // 3. Make a getJSON call using the query object and sending the provided callback in as the last argument
 // TEST IT! Execute this function and console log the results inside the callback.
 const fetchVideos = function(searchTerm, callback) {
-
-};
+  const request = {
+    part: 'snippet',
+    key: API_KEY,
+    q: `${searchTerm}`,
+  };
+  $.getJSON(BASE_URL, request, callback);
+  };
 
 // TASK:
 // 1. Create a `decorateResponse` function that receives the Youtube API response
@@ -25,8 +43,20 @@ const fetchVideos = function(searchTerm, callback) {
 // WILL have to dig into several nested properties!
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
-const decorateResponse = function(response) {
-
+const decorateResponse = function(data) {
+    console.log('hello this is decorate response');
+    // const results = data.items.map((item, index) => renderResult(item));
+    const results = data.items.map(function(response) {
+      debugger;
+      const mapResults = [{
+        //return id object
+        id : response.id,
+        title : response.snippet.title,
+        //.url for image
+        thumbnail : response.snippet.thumbnails.default,
+      }]
+      console.log(mapResults);
+    });
 };
 
 // TASK:
@@ -73,4 +103,6 @@ const handleFormSubmit = function() {
 $(function () {
   // TASK:
   // 1. Run `handleFormSubmit` to bind the event listener to the DOM
+  fetchVideos(sampleQuery, decorateResponse);
+  
 });
