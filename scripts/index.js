@@ -98,8 +98,10 @@ const generateVideoItemHtml = function(video) {
 	console.log('generateVideoItemHtml');
 	return `
 	<li>
-	<span>${video.thumbnail}</span>
-	<\li>
+		<span>${video.id}</span>
+		<span>${video.title}</span>		
+		<span>${video.thumbnail}</span>
+	</li>
 	`
 	
 };
@@ -138,7 +140,15 @@ const render = function() {
 //   g) Inside the callback, run the `render` function 
 // TEST IT!
 const handleFormSubmit = function() {
-
+	$('#js-search-form').submit(event => {
+		event.preventDefault();
+		console.log('Executing handle');
+		// debugger;
+		const searchTerm = $('#search-term').val();
+		console.log(searchTerm);
+		searchTerm.val("");
+	}
+	)
 };
 
 // When DOM is ready:
@@ -149,4 +159,5 @@ $(function () {
 	// generateVideoItemHtml(mockData);
 	addVideosToStore(mockData);
 	render();
+	handleFormSubmit();
 });
